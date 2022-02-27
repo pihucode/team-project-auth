@@ -24,6 +24,10 @@ public class UserService {
         return userDao.getValidUser(username, password);
     }
 
+    public boolean isUsernameUnique(String username) {
+        return userDao.isUsernameUnique(username);
+    }
+
     public boolean addUser(User user) {
         return userDao.addUser(user);
     }

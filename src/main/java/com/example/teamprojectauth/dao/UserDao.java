@@ -39,6 +39,15 @@ public class UserDao {
         return possibleUser.orElse(null);
     }
 
+
+    public boolean isUsernameUnique(String username) {
+        Optional<User> possibleUser = users
+                .stream()
+                .filter(u -> u.getUsername().equals(username))
+                .findFirst();
+        return !possibleUser.isPresent();
+    }
+
     public boolean addUser(User user) {
         Optional<User> existingUser = users
                 .stream()
