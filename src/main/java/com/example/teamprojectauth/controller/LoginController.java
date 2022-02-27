@@ -37,7 +37,7 @@ public class LoginController {
         String token = JwtUtil.generateToken(signingKey, username);
         CookieUtil.create(httpServletResponse, jwtTokenCookieName, token, false, -1, "localhost");
 
-        // TODO - check if login is HR or employee
+        // check if login is HR or employee
         if (user.isHr()) return "hr";
         return "employee";
     }
