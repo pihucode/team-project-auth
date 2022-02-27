@@ -20,6 +20,10 @@ public class UserService {
         return userDao.isUserValid(username, password);
     }
 
+    public User getValidUser(String username, String password) {
+        return userDao.getValidUser(username, password);
+    }
+
     public boolean addUser(User user) {
         return userDao.addUser(user);
     }

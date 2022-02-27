@@ -3,7 +3,6 @@ package com.example.teamprojectauth.domain;
 import lombok.*;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import java.io.Serializable;
 
 @Getter
 @Setter
@@ -11,9 +10,8 @@ import java.io.Serializable;
 @ToString
 @XmlRootElement
 @NoArgsConstructor
-public class User implements Serializable {
+public class LoginCredentials {
     private String username;
     private String password;
     private String email;
-    private boolean isHr;
 }

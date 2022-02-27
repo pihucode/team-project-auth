@@ -1,5 +1,6 @@
 package com.example.teamprojectauth.controller;
 
+import com.example.teamprojectauth.domain.LoginCredentials;
 import com.example.teamprojectauth.domain.User;
 import com.example.teamprojectauth.security.CookieUtil;
 import com.example.teamprojectauth.security.JwtUtil;
@@ -21,29 +22,23 @@ public class LoginController {
         this.userService = userService;
     }
 
-    @GetMapping("login")
-    public String getLogin() {
-        return "login get works";
-    }
-
     @PostMapping("login")
     public String login(HttpServletResponse httpServletResponse,
-                        @RequestBody User user){
-        String username = user.getUsername();
-        String password = user.getPassword();
+                        @RequestBody LoginCredentials credentials){
+        String username = credentials.getUsername();
+        String email = credentials.getEmail();
+        String password = credentials.getPassword();
 
         // if credentials are invalid
-        if (username == null || !userService.isUserValid(username, password)){
-            return "invalid";
-        }
+        User user = userService.getValidUser(username, password);
+        if (user == null) return "invalid";
 
         // if credentials are valid, create new cookie
         String token = JwtUtil.generateToken(signingKey, username);
         CookieUtil.create(httpServletResponse, jwtTokenCookieName, token, false, -1, "localhost");
 
         // TODO - check if login is HR or employee
-        String role = "hr";
-        if (role.equals("hr")) return "hr";
+        if (user.isHr()) return "hr";
         return "employee";
     }
 }

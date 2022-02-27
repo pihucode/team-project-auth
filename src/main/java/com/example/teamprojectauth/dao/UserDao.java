@@ -15,8 +15,8 @@ public class UserDao {
 
     static {
         users = new ArrayList<>();
-        users.add(new User("user1", "111"));
-        users.add(new User("user2", "222"));
+        users.add(new User("employee1", "111", "employee1@mail.com", false));
+        users.add(new User("hr", "asd", "hr@mail.com", true));
     }
 
     public List<User> getAllUsers() { return users; }
@@ -28,6 +28,15 @@ public class UserDao {
                         && u.getPassword().equals(password))
                 .findFirst();
         return possibleUser.isPresent();
+    }
+
+    public User getValidUser(String username, String password) {
+        Optional<User> possibleUser = users
+                .stream()
+                .filter(u -> u.getUsername().equals(username)
+                        && u.getPassword().equals(password))
+                .findFirst();
+        return possibleUser.orElse(null);
     }
 
     public boolean addUser(User user) {
