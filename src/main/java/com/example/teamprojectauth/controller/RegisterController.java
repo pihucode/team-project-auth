@@ -29,13 +29,12 @@ public class RegisterController {
         // return false if username is taken
         if (!userService.isUsernameUnique(cred.getUsername())) return false;
 
-        // create new user
+        // create and add new user
         User user = new User();
         user.setEmail(cred.getEmail());
         user.setUsername(cred.getUsername());
         user.setPassword(cred.getPassword());
         user.setHr(false);
-        // add user to db
         userService.addUser(user);
 
         String token = JwtUtil.generateToken(signingKey, cred.getEmail());

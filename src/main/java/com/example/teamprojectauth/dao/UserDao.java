@@ -4,24 +4,27 @@ package com.example.teamprojectauth.dao;
 import com.example.teamprojectauth.domain.User;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class UserDao {
+public class UserDao extends AbstractHibernateDao<User> {
 
-    private static final List<User> users;
+    public UserDao() { setClazz(User.class);}
 
-    static {
-        users = new ArrayList<>();
-        users.add(new User("employee1", "111", "employee1@mail.com", false));
-        users.add(new User("hr", "asd", "hr@mail.com", true));
-    }
+    //TODO GET USER BY USERNAME OR EMAIL
 
-    public List<User> getAllUsers() { return users; }
+    public List<User> getAllUsers() { return this.getAll(); }
+
+//    static {
+//        users = new ArrayList<>();
+//        users.add(new User("employee1", "111", "employee1@mail.com", false));
+//        users.add(new User("hr", "asd", "hr@mail.com", true));
+//    }
+
 
     public boolean isUserValid(String username, String password) {
+        List<User> users = this.getAll();
         Optional<User> possibleUser = users
                 .stream()
                 .filter(u -> u.getUsername().equals(username)
@@ -31,6 +34,7 @@ public class UserDao {
     }
 
     public User getValidUser(String username, String password) {
+        List<User> users = this.getAll();
         Optional<User> possibleUser = users
                 .stream()
                 .filter(u -> u.getUsername().equals(username)
@@ -41,6 +45,7 @@ public class UserDao {
 
 
     public boolean isUsernameUnique(String username) {
+        List<User> users = this.getAll();
         Optional<User> possibleUser = users
                 .stream()
                 .filter(u -> u.getUsername().equals(username))
@@ -49,13 +54,14 @@ public class UserDao {
     }
 
     public boolean addUser(User user) {
+        List<User> users = this.getAll();
         Optional<User> existingUser = users
                 .stream()
                 .filter(u -> u.getUsername().equals(user.getUsername()))
                 .findFirst();
         // username must be unique
         if (!existingUser.isPresent()) {
-            users.add(user);
+            this.getCurrentSession().save(user);
             return true;
         }
         return false;
