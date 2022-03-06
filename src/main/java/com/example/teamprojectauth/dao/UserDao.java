@@ -43,6 +43,15 @@ public class UserDao extends AbstractHibernateDao<User> {
         return possibleUser.orElse(null);
     }
 
+    public String getEmailByUsername(String username) {
+        List<User> users = this.getAll();
+        Optional<User> possibleUser = users
+                .stream()
+                .filter(u -> u.getUsername().equals(username))
+                .findFirst();
+        if (possibleUser.isPresent()) return possibleUser.get().getEmail();
+        return "";
+    }
 
     public boolean isUsernameUnique(String username) {
         List<User> users = this.getAll();
@@ -67,4 +76,13 @@ public class UserDao extends AbstractHibernateDao<User> {
         return false;
     }
 
+    public User getValidUserByEmail(String email, String password) {
+        List<User> users = this.getAll();
+        Optional<User> possibleUser = users
+                .stream()
+                .filter(u -> u.getEmail().equals(email)
+                        && u.getPassword().equals(password))
+                .findFirst();
+        return possibleUser.orElse(null);
+    }
 }

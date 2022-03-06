@@ -24,6 +24,10 @@ public class UserService {
         return userDao.getValidUser(username, password);
     }
 
+    public String getEmailByUsername(String username) {
+        return userDao.getEmailByUsername(username);
+    }
+
     public boolean isUsernameUnique(String username) {
         return userDao.isUsernameUnique(username);
     }
@@ -32,4 +36,7 @@ public class UserService {
         return userDao.addUser(user);
     }
 
+    public User getValidUserByEmail(String email, String password) {
+        return userDao.getValidUserByEmail(email, password);
+    }
 }

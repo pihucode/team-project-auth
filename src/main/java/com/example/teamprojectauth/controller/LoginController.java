@@ -29,8 +29,13 @@ public class LoginController {
         String email = credentials.getEmail();
         String password = credentials.getPassword();
 
-        // if credentials are invalid
-        User user = userService.getValidUser(username, password);
+        // check if credentials are invalid
+        User user;
+        if (email.equals("")) {
+            user = userService.getValidUser(username, password);
+        } else {
+            user = userService.getValidUserByEmail(email, password);
+        }
         if (user == null) return "invalid";
 
         // if credentials are valid, create new cookie
@@ -41,5 +46,10 @@ public class LoginController {
         // check if login is HR or employee
         if (user.isHr()) return "hr";
         return "employee";
+    }
+
+    @GetMapping("user-email/{username}")
+    public String getUserEmail(@PathVariable String username) {
+        return userService.getEmailByUsername(username);
     }
 }
