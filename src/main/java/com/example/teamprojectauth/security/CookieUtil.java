@@ -16,6 +16,8 @@ public class CookieUtil {
         cookie.setDomain(domain);
         cookie.setPath("/");
         httpServletResponse.addCookie(cookie);
+        System.out.println("cookie created!");
+
     }
 
     public static void clear(HttpServletResponse httpServletResponse, String name) {

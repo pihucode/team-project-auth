@@ -3,6 +3,7 @@ package com.example.teamprojectauth.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -35,5 +36,11 @@ public abstract class AbstractHibernateDao<T extends Serializable> {
 
     protected Session getCurrentSession() {
         return sessionFactory.getCurrentSession();
+    }
+
+    public void updateRecord(final T o){
+        Transaction transaction = sessionFactory.getCurrentSession().beginTransaction();
+        sessionFactory.getCurrentSession().update(o);
+        transaction.commit();
     }
 }

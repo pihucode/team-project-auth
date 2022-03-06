@@ -34,8 +34,9 @@ public class LoginController {
         if (user == null) return "invalid";
 
         // if credentials are valid, create new cookie
-        String token = JwtUtil.generateToken(signingKey, username);
-        CookieUtil.create(httpServletResponse, jwtTokenCookieName, token, false, -1, "localhost");
+        String jwtToken = JwtUtil.generateToken(signingKey, user.getEmail());
+        System.out.println(jwtToken);
+        CookieUtil.create(httpServletResponse, jwtTokenCookieName, jwtToken, false, -1, "localhost");
 
         // check if login is HR or employee
         if (user.isHr()) return "hr";
